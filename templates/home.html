@@ -1,0 +1,120 @@
+<!--Author : AKSHAYA RAVI
+# Msc in Artificial Intelligence Systems-->
+<!DOCTYPE html>
+<html>
+    <style>
+        body
+        {
+        background:black; 
+        color: white;
+        font-family:verdana;
+        }
+        div{
+        background: #b8a9c9 ; 
+        color:black;
+        font-family:verdana;
+        
+        }
+   
+    </style>
+    <head>
+        <title> Home </title>
+    </head>
+    <body>
+        <h1> Image scraper </h1>
+        <h4> Basic CRUD operations </h4> 
+        <hr>
+        <h5> <i>Scrape images </i></h5>
+        <form action="{{ url_for('scrapeData') }}" method="post">
+        Enter complete url : <input type="text" name="weburl">
+        <input type="submit">
+        </form>
+        {% if length %}
+            <div>
+                <h4>Images Found  
+                    <form action="{{ url_for('savetolocal') }}" method="post"> 
+                        <input type="submit" name="save_button" value="Save to local" > 
+                    </form> 
+                </h4> 
+                
+                {% for i in range(0,length) %}
+                   <img src={{links[i]}} style="width:300px;height:300px;"> 
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if savedMessages %} 
+              <p>{{ savedMessages }} </p> 
+        {% endif %}
+        {% if message %}
+      
+         <p>{{ message }} </p>
+      
+        {% endif %}
+        <h5> <i>Retrieve scraped images by base url name </i></h5>
+        <form action="{{ url_for('retrievbyName') }}" method="post">
+        Enter basename of the url : <input type="text" name="baseurl">
+        <input type="submit">
+        </form>
+        {% if lengthOflinks %}
+            <div>
+                <h4>Images Found</h4>
+                {% for i in range(0,lengthOflinks) %}
+                   <img src={{linksfromdb[i]}} style="width:300px;height:300px;"> 
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if retrievemessage %}
+      
+         <p>{{ retrievemessage }} </p>
+      
+        {% endif %}
+        
+        <h5> <i>Update keywords for a url </i></h5>
+        <form action="{{ url_for('updatekeywords') }}" method="post">
+        Enter basename of the url : <input type="text" name="url">
+        Enter keywords for the url : <input type="text" name="keywords">
+        <input type="submit">
+        {% if updateMessage %}
+      
+         <p>{{ updateMessage }} </p>
+      
+        {% endif %}
+        </form>
+        <h5> <i>Delete images by base url name </i></h5>
+        <form action="{{ url_for('deletebyName') }}" method="post">
+        Enter basename of the url : <input type="text" name="deletebaseurl">
+        <input type="submit">
+        </form>
+        {% if deleteMessage %}
+      
+         <p>{{ deleteMessage }} </p>
+      
+        {% endif %}
+        <h4> Mongodb File operations </h4>
+        <hr>
+        <h5> <i>Upload image files to database </i></h5>
+        <form action="{{ url_for('uploadfile') }}" method="post" enctype='multipart/form-data'>
+        Enter keywords : <input type="text" name="imgkeywords">
+        Select file : <input type="file" name="imgfile">
+        <input type="submit">
+        </form>
+        {% if uploadMessage %}
+      
+         <p>{{ uploadMessage }} </p>
+      
+        {% endif %} 
+        <h5> <i>Retrieve image files to database </i></h5>
+        <form action="{{ url_for('retrieveimgfile') }}" method="post">
+        
+        Enter keywords : <input type="text" name="imgkeywords">
+       
+        <input type="submit">
+        </form>
+        {% if image %}
+         <div>
+         <img src = "data:image/png;base64, {{image}}"/>
+        
+        </div>
+        {% endif %} 
+    </body>
+</html>
